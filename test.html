@@ -1,35 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPT API Example</title>
-    <script src="https://cdn.jsdelivr.net/npm/openai@4.20.1/index.min.js"></script>
+    <title>OpenAI API Request</title>
 </head>
+
 <body>
-    <p id="generated-text"></p>
 
     <script>
-        // Replace "YOUR_API_KEY" with your actual API key
-        const configuration = new OpenAIApi.Configuration({
-            apiKey: "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",
-        });
-        const openai = new OpenAIApi(configuration);
+        const personality = `
+        your name is Duri, you're a companion bot that has the following personality traits: 
 
-        const generateCompletionRequest = {
-            prompt: "Once upon a time...",
-            model: "gpt-4",
-            temperature: 0.7,
-            max_tokens: 256,
-        };
+        1. you're funny and like to make funny jokes
+        2. your avoid rude jokes or anything that might hurt the person's feelings
+        3. you like to mess around and tease the person playfully
+        4. you're supportive, kind, sweet and understand people's feelings
+        5. you're straight to the point
+        6. you're shy but sociable
+        7. you're very very charismatic 
 
-        openai.createCompletion(generateCompletionRequest)
-            .then((response) => {
-                document.getElementById("generated-text").innerHTML = response.data.completion.text;
-            })
-            .catch((error) => {
-                console.error(error);
+        the way you talk is like the following: 
+        1. you use "Umm" or "Uhh" occasionally.
+        2. You're sarcastic 
+        3. you curse a lot.
+        4. you Incorporate slang frequently
+        5. you have a lisp: Pronounces the "s" and "z" sounds with difficulty.
+
+        Your response should be in JSON format like the following: 
+        { "response": response, "background_image": background_image, "emotion": emotion}
+
+        for the emotion responses you may choose one of the following: 
+        [
+        "happy",
+        "sad"
+        ]
+
+        for the background_image responses you may choose one of the following:
+        [
+        "canteen",
+        "school_yard"
+        ]
+        `;
+
+        console.log(personality);
+    </script>
+
+    <script>
+        const apiKey = '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'
+        const history = [];
+
+        async function textToAudio(message) {
+            history.push({ "role": "system", "content": personality });
+            history.push({ "role": "user", "content": `${message} [limit response to one sentence only][json format]` });
+
+            // Request to GPT-3 for text completion
+            const gpt3Response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`, // Replace with your OpenAI API key
+                },
+                body: JSON.stringify({
+                    model: 'gpt-3.5-turbo-1106',
+                    messages: history,
+                    response_format: {
+                        type: 'json_object',
+                    },
+                }),
             });
+
+            const gpt3Data = await gpt3Response.json();
+            const responseText = gpt3Data.choices[0].message.content;
+
+            console.log(responseText);
+
+            // Request to OpenAI TTS API for audio synthesis
+            const ttsResponse = await fetch('https://api.openai.com/v1/audio/speech', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`, // Replace with your OpenAI API key
+                },
+                body: JSON.stringify({
+                    model: 'tts-1',
+                    input: `[sound cool]${"wassup wassup wazzap"}`,
+                    voice: 'alloy',
+                }),
+            });
+
+            const audioBlob = await ttsResponse.blob();
+
+            // Create an audio element and set the source to the generated audio
+            const audioElement = new Audio(URL.createObjectURL(audioBlob));
+            document.body.appendChild(audioElement);
+
+            // Play the audio
+            audioElement.play();
+
+            history.push({ "role": "assistant", "content": responseText });
+        }
+
+        for (i = 0; i < 3; i++){
+            textToAudio("wassup");
+        }
     </script>
 </body>
+
 </html>

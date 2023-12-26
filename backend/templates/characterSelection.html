@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAI API Request</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @font-face {
+            font-family: "MainFont1";
+            src: url('https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/fonts/MainFont1.otf');
+        }
+
+        @font-face {
+            font-family: 'MainFont2';
+            src: url('https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/fonts/MainFont2.ttf');
+        }
+
+        @font-face {
+            font-family: 'MainFont3';
+            src: url('https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/fonts/MainFont3.ttf');
+        }
+
+        @font-face {
+            font-family: 'MainFont4';
+            src: url('https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/fonts/MainFont4.ttf');
+        }
+
+        @font-face {
+            font-family: 'MainFont5';
+            src: url('https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/fonts/MainFont5.ttf');
+        }
+
+        @font-face {
+            font-family: "HackLogo";
+            src: url("https://hackaten.sgp1.cdn.digitaloceanspaces.com/fonts/TYPOGRAPH%20PRO%20Extra%20Bold.ttf");
+        }
+
+        #s {
+            font-family: 'MainFont4';
+        }
+    </style>
+
+</head>
+
+<body class="relative  bg-auto bg-center bg-no-repeat flex flex-col w-full min-h-screen overflow-x-hidden"
+    style="background-image: url('https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/bg/AdventureGuild.jpg');"
+    id="body_bg">
+
+    <div class="h-screen w-full ">
+
+        <div class="bg-black/50 h-screen w-full flex flex-col justify-center items-center">
+            <h1 class="text-white text-5xl pb-12 animate-ping motion-safe:animate-bounce" id="s">Welcome To Duri</h1>
+
+            <div class="grid grid-cols-2 gap-12 md:gap-24 p-8">
+                <div
+                    class="shadow-sm shadow-white group bg-white border border-2 border-gray-100 rounded-md p-4 backdrop-filter backdrop-blur-lg bg-opacity-10 overflow-hidden transform hover:translate-y-[-5px] transition-transform duration-300 ease-in-out cursor-pointer">
+                    <div class="h-full w-full flex flex-col md:flex-row justify-center items-center">
+                        <img class="w-22 md:w-64 md:p-10 "
+                            src="https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/characters/despair.svg" alt="">
+                        <h2 class="text-white text-[40px] font-medium" style="font-family: 'MainFont2';">Story Mode</h2>
+                    </div>
+
+                </div>
+                <div
+                    class="shadow-sm shadow-white group bg-white border border-2 border-gray-100 rounded-md p-4 backdrop-filter backdrop-blur-lg bg-opacity-10 overflow-hidden transform hover:translate-y-[-5px] transition-transform duration-300 ease-in-out cursor-pointer">
+                    <div class="h-full w-full flex flex-col md:flex-row justify-center items-center">
+                        <img class="w-22 md:w-64 md:p-10 "
+                            src="https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/characters/crying.svg" alt="">
+                        <h2 class="text-white text-[40px] font-medium" style="font-family: 'MainFont2';">Chat</h2>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+    <audio id="myAudio" controls style="display: none;">
+        <source src="https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/Music/characterSelectMusic.mp3"
+            type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+    <script>
+        // Get the audio element
+        document.addEventListener("DOMContentLoaded", function () {
+            var audio = document.getElementById("myAudio");
+            audio.play();
+            audio.volume = 0.4;
+            audio.currentTime = 5;
+        });
+
+    </script>
+</body>
+
+</html>

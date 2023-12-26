@@ -55,21 +55,21 @@
             <h1 class="text-white text-5xl pb-12 animate-ping motion-safe:animate-bounce" id="s">Welcome To Duri</h1>
 
             <div class="grid grid-cols-2 gap-12 md:gap-24 p-8">
-                <div
+                <div nclick="window.location.href = '/story'"
                     class="shadow-sm shadow-white group bg-white border border-2 border-gray-100 rounded-md p-4 backdrop-filter backdrop-blur-lg bg-opacity-10 overflow-hidden transform hover:translate-y-[-5px] transition-transform duration-300 ease-in-out cursor-pointer">
                     <div class="h-full w-full flex flex-col md:flex-row justify-center items-center">
-                        <img class="w-22 md:w-64 md:p-10 "
+                        <img class="w-22 md:w-64 md:p-10 pb-6"
                             src="https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/characters/despair.svg" alt="">
-                        <h2 class="text-white text-[40px] font-medium" style="font-family: 'MainFont2';">Story Mode</h2>
+                        <h2 class="text-white text-[30px] md:text-[40px] font-medium" style="font-family: 'MainFont2';">Story Mode</h2>
                     </div>
 
                 </div>
-                <div
+                <div onclick="window.location.href = '/chat'"
                     class="shadow-sm shadow-white group bg-white border border-2 border-gray-100 rounded-md p-4 backdrop-filter backdrop-blur-lg bg-opacity-10 overflow-hidden transform hover:translate-y-[-5px] transition-transform duration-300 ease-in-out cursor-pointer">
                     <div class="h-full w-full flex flex-col md:flex-row justify-center items-center">
-                        <img class="w-22 md:w-64 md:p-10 "
+                        <img class="w-22 md:w-64 md:p-10 pb-6"
                             src="https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/characters/crying.svg" alt="">
-                        <h2 class="text-white text-[40px] font-medium" style="font-family: 'MainFont2';">Chat</h2>
+                        <h2 class="text-white text-[30px] md:text-[40px] font-medium" style="font-family: 'MainFont2';">Chat</h2>
 
                     </div>
 
@@ -80,7 +80,7 @@
         </div>
 
     </div>
-    <audio id="myAudio" controls style="display: none;">
+    <audio id="myAudio" controls >
         <source src="https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/Music/characterSelectMusic.mp3"
             type="audio/mp3">
         Your browser does not support the audio element.

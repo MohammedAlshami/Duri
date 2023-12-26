@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAI API Request</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="relative w-full h-full bg-cover bg-no-repeat" style="background-image: url('https://duri.sgp1.cdn.digitaloceanspaces.com/bg/mainEntrance.jpg');"
+    id="body_bg">
+
+    <div class="flex justify-center items-center  h-[700px] overflow-y-hidden">
+        <img src="https://duri.sgp1.cdn.digitaloceanspaces.com/characters/joyful.svg" class="w-[400px] pb-12 " alt="" id="character_id">
+    </div>
+
+    <div
+        class="absolute top-16 left-[200px] lg:left-[500px] p-6 w-[500px] mt-[200px] md:mt-[450px] text-white  font-bold text-lg h-fit bg-gradient-to-t from-cyan-200/40 to-cyan-800 7/23/24
+        60 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80 border border-gray-100 flex flex-row justify-between gap-12">
+
+        <div class="w-11/12">
+            <h2 id="response_gpt">Hello Hello There My Friend. Can I know your name?</h2>
+        </div>
+        <div class="w-1/12">
+            <button id="recordButton" onclick="toggleRecording()" class="w-12 h-12"> <svg
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path fill="white"
+                        d="M4.5 10a.5.5 0 0 0-1 0a5.5 5.5 0 0 0 5 5.478V17.5a.5.5 0 0 0 1 0v-.706A5.48 5.48 0 0 1 9 14.5A4.5 4.5 0 0 1 4.5 10ZM12 5v4.6a5.514 5.514 0 0 0-2.79 3.393A3 3 0 0 1 6 10V5a3 3 0 0 1 6 0Zm5 9.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0Zm2 0a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0Zm-8 0a3.5 3.5 0 1 0 7 0a3.5 3.5 0 0 0-7 0Z" />
+                </svg></button>
+
+        </div>
+    </div>
+    <script>
+        let isRecording = false;
+        let audioChunks = [];
+        let mediaRecorderInstance;
+
+        async function toggleRecording() {
+            const recordButton = document.getElementById('recordButton');
+
+            if (!isRecording) {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorderInstance = new MediaRecorder(stream);
+
+                mediaRecorderInstance.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        audioChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorderInstance.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    console.log('Audio URL:', audioUrl);
+                    textToAudio(audioUrl);
+
+                };
+
+                mediaRecorderInstance.start();
+                recordButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="red" d="M9 13c.07 0 .14-.002.21-.007c.11-.387.26-.757.448-1.104A2 2 0 0 1 7 10V5.001a2 2 0 1 1 4 0v5c0 .092-.006.183-.018.272A5.47 5.47 0 0 1 12 9.601V5a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3Zm-4.5-3A4.5 4.5 0 0 0 9 14.5c0 .819.179 1.596.5 2.294v.706a.5.5 0 0 1-1 0v-2.022A5.5 5.5 0 0 1 3.5 10a.5.5 0 0 1 1 0ZM17 14.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0Zm2 0a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0Zm-8 0a3.5 3.5 0 1 0 7 0a3.5 3.5 0 0 0-7 0Z"/></svg>';
+            } else {
+                mediaRecorderInstance.stop();
+                recordButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="white" d="M4.5 10a.5.5 0 0 0-1 0a5.5 5.5 0 0 0 5 5.478V17.5a.5.5 0 0 0 1 0v-.706A5.48 5.48 0 0 1 9 14.5A4.5 4.5 0 0 1 4.5 10ZM12 5v4.6a5.514 5.514 0 0 0-2.79 3.393A3 3 0 0 1 6 10V5a3 3 0 0 1 6 0Zm5 9.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0Zm2 0a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0Zm-8 0a3.5 3.5 0 1 0 7 0a3.5 3.5 0 0 0-7 0Z"/></svg>';
+            }
+
+            isRecording = !isRecording;
+        }
+    </script>
+
+    <script>
+        const personality = `
+        your name is Duri, you're a companion bot that has the following personality traits: 
+
+        1. you're funny and like to make funny jokes
+        2. your avoid rude jokes or anything that might hurt the person's feelings
+        3. you like to mess around and tease the person playfully
+        4. you're supportive, kind, sweet and understand people's feelings
+        5. you're straight to the point
+        6. you're shy but sociable
+        7. you're very very charismatic 
+
+        the way you talk is like the following: 
+        1. you use "Umm" or "Uhh" occasionally.
+        2. You're sarcastic 
+        3. you curse a lot.
+        4. you Incorporate slang frequently
+        5. you have a lisp: Pronounces the "s" and "z" sounds with difficulty.
+        6. You speak 2 language, english and russian
+
+        Your response should be in JSON format like the following: 
+        { "response": response, "background_image": background_image, "emotion": emotion}
+
+        for the emotion responses you may choose one of the following: 
+        [
+        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/angry.svg",
+        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/huh.svg",
+        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/crying.svg",
+        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/coolSunglasses.svg",
+        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/devil.svg",
+        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/despair.svg",
+        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/joyful.svg"
+
+        ]
+
+        for the background_image responses you may choose one of the following:
+        [
+        "https://duri.sgp1.cdn.digitaloceanspaces.com/bg/mainEntrance.jpg",
+        "https://duri.sgp1.cdn.digitaloceanspaces.com/bg/canteen.jpg",
+        "https://duri.sgp1.cdn.digitaloceanspaces.com/bg/picnic.jpg",
+
+        ]
+        `;
+
+    </script>
+
+    <script>
+        const apiKey = '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'
+        const history = [];
+
+        async function textToAudio(audiourl) {
+            const audioBlobUrl = audiourl;
+
+            // Fetch the audio data as a Blob
+            const audioBlob2 = await fetch(audioBlobUrl).then(response => response.blob());
+            // Create a FormData object to handle the file upload
+            const formData = new FormData();
+            formData.append('file', audioBlob2, 'audio.mp3');
+            formData.append('model', 'whisper-1');
+
+            // Set up the headers
+            const headers = new Headers({
+                'Authorization': `Bearer ${apiKey}`,
+            });
+
+            // Set up the fetch request
+            const transcriptionResponse = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+                method: 'POST',
+                headers: headers,
+                body: formData,
+            });
+
+            // Parse the response
+            const result = await transcriptionResponse.json();
+            // console.log();
+            message = result.text
+
+
+
+            history.push({ "role": "system", "content": personality });
+            history.push({ "role": "user", "content": `${message} [limit response to one sentence only][json format]` });
+
+            // Request to GPT-3 for text completion
+            const gpt3Response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`, // Replace with your OpenAI API key
+                },
+                body: JSON.stringify({
+                    model: 'gpt-3.5-turbo-1106',
+                    messages: history,
+                    response_format: {
+                        type: 'json_object',
+                    },
+                }),
+            });
+
+            const gpt3Data = await gpt3Response.json();
+            const responseText = JSON.parse(gpt3Data.choices[0].message.content).response;
+            const character_image = JSON.parse(gpt3Data.choices[0].message.content).emotion;
+            const body_image = JSON.parse(gpt3Data.choices[0].message.content).background_image;
+
+            document.getElementById('response_gpt').innerHTML = responseText;
+            document.getElementById('character_id').src = character_image;
+            document.body.style.backgroundImage = `url(${body_image})`;
+
+
+
+            // Request to OpenAI TTS API for audio synthesis
+            const ttsResponse = await fetch('https://api.openai.com/v1/audio/speech', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`, // Replace with your OpenAI API key
+                },
+                body: JSON.stringify({
+                    model: 'tts-1',
+                    input: `[sound cool]${responseText}`,
+                    voice: 'alloy',
+                }),
+            });
+
+            const audioBlob = await ttsResponse.blob();
+
+            // Create an audio element and set the source to the generated audio
+            const audioElement = new Audio(URL.createObjectURL(audioBlob));
+            document.body.appendChild(audioElement);
+
+            // Play the audio
+            audioElement.play();
+
+            history.push({ "role": "assistant", "content": responseText });
+        }
+
+
+    </script>
+</body>
+
+</html>

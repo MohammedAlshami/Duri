@@ -8,3 +8,11 @@ import requests
 
 def home(request):
     return render(request, "characterSelection.html")
+
+
+def chat(request):
+    return render(request, "chat.html")
+
+
+def story(request):
+    return render(request, "story.html")

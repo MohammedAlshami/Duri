@@ -59,7 +59,7 @@
         <div class="bg-black/50 h-screen w-full flex flex-col justify-center items-center">
             <h1 class="text-white text-5xl pb-12 animate-ping motion-safe:animate-bounce" id="s">Welcome To Duri</h1>
 
-            <div class="grid grid-cols-1 gap-12 md:gap-24 p-8">
+            <div class="grid grid-cols-1 gap-12 md:gap-24 p-8 motion-safe:animate-bounce" >
                 <div id="chatModeButton"
                     class="shadow-sm shadow-white group bg-white border border-2 border-gray-100 rounded-md p-4 backdrop-filter backdrop-blur-lg bg-opacity-10 overflow-hidden transform hover:translate-y-[-5px] transition-transform duration-300 ease-in-out cursor-pointer">
                     <div class="h-full w-full flex flex-col md:flex-row justify-center items-center">
@@ -95,9 +95,15 @@
 
             chatModeButton.addEventListener("click", function () {
                 // Add the animate-bounce class
-                // chatModeButton.classList.add("animate-pulse");
-                chatModeButton.classList.add("animate-ping");
+                // // chatModeButton.classList.add("animate-pulse");
+                // chatModeButton.classList.add("animate-ping");
 
+                // setTimeout(function () {
+                //     // Redirect to the other page
+                //     chatModeButton.classList.remove("animate-ping");
+                // }, 500); // Adjust the timeout based on the animation duration
+
+          
                 // Wait for the animation to finish (assuming it's 1 second, adjust as needed)
                 setTimeout(function () {
                     // Redirect to the other page

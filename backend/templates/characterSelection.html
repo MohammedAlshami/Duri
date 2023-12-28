@@ -7,6 +7,9 @@
     <title>OpenAI API Request</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"
+        integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         @font-face {
             font-family: "MainFont1";
@@ -42,58 +45,66 @@
             font-family: 'MainFont4';
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+
 
 </head>
 
-<body class="relative  bg-auto bg-center bg-no-repeat flex flex-col w-full min-h-screen overflow-x-hidden"
+<body class="relative bg-auto bg-center bg-no-repeat flex flex-col w-full min-h-screen overflow-x-hidden"
     style="background-image: url('https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/bg/AdventureGuild.jpg');"
     id="body_bg">
 
-    <div class="h-screen w-full ">
+    <div class="h-screen w-full " id="transitioneffect">
 
         <div class="bg-black/50 h-screen w-full flex flex-col justify-center items-center">
             <h1 class="text-white text-5xl pb-12 animate-ping motion-safe:animate-bounce" id="s">Welcome To Duri</h1>
 
-            <div class="grid grid-cols-2 gap-12 md:gap-24 p-8">
-                <div nclick="window.location.href = '/story'"
+            <div class="grid grid-cols-1 gap-12 md:gap-24 p-8">
+                <div id="chatModeButton"
                     class="shadow-sm shadow-white group bg-white border border-2 border-gray-100 rounded-md p-4 backdrop-filter backdrop-blur-lg bg-opacity-10 overflow-hidden transform hover:translate-y-[-5px] transition-transform duration-300 ease-in-out cursor-pointer">
                     <div class="h-full w-full flex flex-col md:flex-row justify-center items-center">
                         <img class="w-22 md:w-64 md:p-10 pb-6"
                             src="https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/characters/despair.svg" alt="">
-                        <h2 class="text-white text-[30px] md:text-[40px] font-medium" style="font-family: 'MainFont2';">Story Mode</h2>
+                        <h2 class="text-white text-[30px] md:text-[40px] font-medium" style="font-family: 'MainFont2';">
+                            Chat Mode</h2>
                     </div>
 
                 </div>
-                <div onclick="window.location.href = '/chat'"
-                    class="shadow-sm shadow-white group bg-white border border-2 border-gray-100 rounded-md p-4 backdrop-filter backdrop-blur-lg bg-opacity-10 overflow-hidden transform hover:translate-y-[-5px] transition-transform duration-300 ease-in-out cursor-pointer">
-                    <div class="h-full w-full flex flex-col md:flex-row justify-center items-center">
-                        <img class="w-22 md:w-64 md:p-10 pb-6"
-                            src="https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/characters/crying.svg" alt="">
-                        <h2 class="text-white text-[30px] md:text-[40px] font-medium" style="font-family: 'MainFont2';">Chat</h2>
-
-                    </div>
-
-                </div>
-
-
             </div>
         </div>
 
     </div>
-    <audio id="myAudio" controls >
+    <audio id="myAudio" controls style="display: none;">
         <source src="https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/Music/characterSelectMusic.mp3"
             type="audio/mp3">
-        Your browser does not support the audio element.
     </audio>
     <script>
-        // Get the audio element
         document.addEventListener("DOMContentLoaded", function () {
-            var audio = document.getElementById("myAudio");
-            audio.play();
-            audio.volume = 0.4;
-            audio.currentTime = 5;
-        });
+            let timer, sound;
+            sound = new Howl({
+                src: ['<?= get_theme_file_uri() ?>https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/Music/characterSelectMusic.mp3']
+            });
+            sound.play();
+            // var audio = document.getElementById("myAudio");
+            // audio.play();
+            // audio.volume = 0.4;
+            // audio.currentTime = 5;
 
+            // Add click event listener to the chatModeButton
+            var chatModeButton = document.getElementById("chatModeButton");
+
+            chatModeButton.addEventListener("click", function () {
+                // Add the animate-bounce class
+                // chatModeButton.classList.add("animate-pulse");
+                chatModeButton.classList.add("animate-ping");
+
+                // Wait for the animation to finish (assuming it's 1 second, adjust as needed)
+                setTimeout(function () {
+                    // Redirect to the other page
+                    window.location.href = '/chat';
+                }, 1000); // Adjust the timeout based on the animation duration
+            });
+        });
     </script>
 </body>
 

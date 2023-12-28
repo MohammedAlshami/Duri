@@ -1,28 +1,73 @@
-import requests
+import pyrebase
+def initialize_firebase():
+    # Replace with your Firebase project configuration
+    config = {
+        "apiKey": "AIzaSyBLv1DiRB6egmpaoIKfjODXZF5fYheQKIM",
+        "authDomain": "realtimedatabasetest-f226a.firebaseapp.com",
+        "databaseURL": "https://realtimedatabasetest-f226a-default-rtdb.asia-southeast1.firebasedatabase.app",
+        "projectId": "realtimedatabasetest-f226a",
+        "storageBucket": "realtimedatabasetest-f226a.appspot.com",
+        "messagingSenderId": "348704796176",
+        "appId": "1:348704796176:web:b19a37e276fd097a2ce495",
+    }
 
-# Replace "YOUR_RAWG_API_KEY" with your actual API key
-api_key = "894784de41d3460586b94a072fd4fbf9"
-base_url = "https://api.rawg.io/api/games"
-game_name = "The Legend of Zelda"
+    firebase = pyrebase.initialize_app(config)
+    db = firebase.database()
 
-# Construct the request URL with parameters
-params = {"key": api_key, "search": game_name}
-response = requests.get(base_url, params=params)
+    return db
 
-# Check if the request was successful (status code 200)
-if response.status_code == 200:
-    data = response.json()
-    
-    # Extract relevant information (e.g., name, image URL)
-    if data.get("results"):
-        game_info = data["results"][0]
-        name = game_info.get("name")
-        image_url = game_info.get("background_image")
-        
-        print(f"Game: {name}")
-        print(f"Image URL: {image_url}")
+
+firebaseDB = initialize_firebase()
+
+
+def create_chat_history(user, user_msg, bot_response, personality):
+    # Initialize Firebase
+    db = firebaseDB
+
+    # Check if the 'Chathistory' table exists, if not, create it
+    if not db.child("Chathistory").shallow().get().val():
+        db.child("Chathistory").set({})
+
+    # Check if the user exists in the 'Chathistory' table
+    user_records = db.child("Chathistory").child(user).get().val()
+
+    if user_records:
+        # User exists, append a new record
+        user_records.append(personality)
+        user_records.append(user_msg)
+        user_records.append(bot_response)
+        db.child("Chathistory").child(user).set(user_records)
     else:
-        print("Game not found in the API response.")
-else:
-    print(f"Error: {response.status_code}")
-    print(response.text)
+        # User doesn't exist, create a new record
+        db.child("Chathistory").child(user).set(
+            [
+                 personality,
+                 user_msg,
+                 bot_response
+            ]
+        )
+
+
+def get_chat_history(user):
+    # Initialize Firebase
+    db = firebaseDB
+
+    # Check if the 'Chathistory' table exists
+    if not db.child("Chathistory").shallow().get().val():
+        return []
+
+    # Get the user's chat history
+    user_records = db.child("Chathistory").child(user).get().val()
+
+    if user_records:
+        return user_records
+    else:
+        return []
+
+
+
+# Example Usage:
+# create_chat_history("", "Hello", "Hi there!", "crazy bot")
+
+user_history = get_chat_history("Shami")
+[print(i) for i in user_history]

@@ -10,16 +10,49 @@
 
 </head>
 
-<body class="relative w-full h-full bg-cover bg-no-repeat" style="background-image: url('https://duri.sgp1.cdn.digitaloceanspaces.com/bg/mainEntrance.jpg');"
-    id="body_bg">
+<body class="relative w-full h-full bg-cover bg-no-repeat"
+    style="background-image: url('https://duri.sgp1.cdn.digitaloceanspaces.com/bg/mainEntrance.jpg');" id="body_bg">
 
-    <div class="flex justify-center items-center  h-[700px] overflow-y-hidden">
-        <img src="https://duri.sgp1.cdn.digitaloceanspaces.com/characters/joyful.svg" class="w-[400px] pb-12 " alt="" id="character_id">
+    <div class="h-[100vh] w-full bg-black/70 absolute flex justify-center items-center" id="name">
+        <div
+            class=" p-6 w-[500px] flex-col text-white font-bold text-lg h-fit bg-gradient-to-t from-cyan-200/40 to-cyan-800 7/23/24 60 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80 border border-gray-100 flex flex-row justify-between gap-12">
+            <h2>What's Your Name?</h2>
+            <input type="text" placeholder="Name" class="p-2 rounded-md text-black" id="usernameInput">
+            <button onclick="hideAndStore()" class="w-full bg-cyan-600 p-4 rounded-lg">Submit</button>
+        </div>
     </div>
 
-    <div
-        class="absolute top-16 left-[200px] lg:left-[500px] p-6 w-[500px] mt-[200px] md:mt-[450px] text-white  font-bold text-lg h-fit bg-gradient-to-t from-cyan-200/40 to-cyan-800 7/23/24
-        60 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80 border border-gray-100 flex flex-row justify-between gap-12">
+    <script>
+        // Global variable to store the username
+        let username;
+
+        function hideAndStore() {
+            // Get the input value
+            username = document.getElementById("usernameInput").value;
+
+            // Check if the input is not empty
+            if (username.trim() !== "") {
+                // Hide the div
+                document.getElementById("name").style.display = "none";
+                document.getElementById("chatbox").classList.remove("hidden");
+                document.getElementById("duri").classList.remove("hidden");
+
+                // Do something with the username if needed
+                console.log("Username:", username);
+            } else {
+                // Display an alert or take any other appropriate action
+                alert("Please enter a username.");
+            }
+        }
+    </script>
+
+    <div class="hidden flex justify-center items-center  h-[700px] overflow-y-hidden"  id="duri">
+        <img src="https://duri.sgp1.cdn.digitaloceanspaces.com/characters/joyful.svg" class="w-[400px] pb-12 " alt=""
+            id="character_id">
+    </div>
+
+    <div  id="chatbox"
+        class="hidden absolute top-16 left-[200px] lg:left-[500px] p-6 w-[500px] mt-[200px] md:mt-[450px] text-white  font-bold text-lg h-fit bg-gradient-to-t from-cyan-200/40 to-cyan-800 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80 border border-gray-100 flex flex-row justify-between gap-12">
 
         <div class="w-11/12">
             <h2 id="response_gpt">Hello Hello There My Friend. Can I know your name?</h2>
@@ -33,6 +66,18 @@
 
         </div>
     </div>
+    <audio id="myAudio" controls style="display: none;">
+        <source src="https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/Music/characterSelectMusic.mp3"
+            type="audio/mp3">
+    </audio>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var audio = document.getElementById("myAudio");
+            audio.play();
+            audio.volume = 0.3;
+            audio.currentTime = 5;
+        });
+    </script>
     <script>
         let isRecording = false;
         let audioChunks = [];
@@ -55,7 +100,9 @@
                     const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                     const audioUrl = URL.createObjectURL(audioBlob);
                     console.log('Audio URL:', audioUrl);
+                    audioChunks = []
                     textToAudio(audioUrl);
+
 
                 };
 
@@ -71,54 +118,47 @@
     </script>
 
     <script>
-        const personality = `
-        your name is Duri, you're a companion bot that has the following personality traits: 
+        function sendMessageToDjango(message) {
+            var endpoint = 'chat';  // Replace with your Django server URL
 
-        1. you're funny and like to make funny jokes
-        2. your avoid rude jokes or anything that might hurt the person's feelings
-        3. you like to mess around and tease the person playfully
-        4. you're supportive, kind, sweet and understand people's feelings
-        5. you're straight to the point
-        6. you're shy but sociable
-        7. you're very very charismatic 
+            // Data to be sent in the request
+            var postData = {
+                message: message,
+                user: username
+            };
 
-        the way you talk is like the following: 
-        1. you use "Umm" or "Uhh" occasionally.
-        2. You're sarcastic 
-        3. you curse a lot.
-        4. you Incorporate slang frequently
-        5. you have a lisp: Pronounces the "s" and "z" sounds with difficulty.
-        6. You speak 2 language, english and russian
+            // Make a POST request using the fetch API
+            return fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // You may need to include additional headers, such as authorization headers, if required by the server
+                },
+                body: JSON.stringify(postData)
+            })
+                .then(response => {
+                    // Check if the request was successful (status code 200-299)
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
 
-        Your response should be in JSON format like the following: 
-        { "response": response, "background_image": background_image, "emotion": emotion}
-
-        for the emotion responses you may choose one of the following: 
-        [
-        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/angry.svg",
-        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/huh.svg",
-        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/crying.svg",
-        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/coolSunglasses.svg",
-        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/devil.svg",
-        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/despair.svg",
-        "https://duri.sgp1.cdn.digitaloceanspaces.com/characters/joyful.svg"
-
-        ]
-
-        for the background_image responses you may choose one of the following:
-        [
-        "https://duri.sgp1.cdn.digitaloceanspaces.com/bg/mainEntrance.jpg",
-        "https://duri.sgp1.cdn.digitaloceanspaces.com/bg/canteen.jpg",
-        "https://duri.sgp1.cdn.digitaloceanspaces.com/bg/picnic.jpg",
-
-        ]
-        `;
-
+                    // Parse the response (assuming it's JSON in this example)
+                    return response.json();
+                })
+                .then(data => {
+                    // Parse the 'message' field as JSON and return it
+                    return JSON.parse(data.message);
+                })
+                .catch(error => {
+                    // Handle errors during the fetch operation
+                    console.error('Fetch error:', error);
+                    throw error; // Propagate the error to the caller
+                });
+        }
     </script>
 
     <script>
-        const apiKey = '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'
-        const history = [];
+        const apiKey = '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'
 
         async function textToAudio(audiourl) {
             const audioBlobUrl = audiourl;
@@ -127,6 +167,7 @@
             const audioBlob2 = await fetch(audioBlobUrl).then(response => response.blob());
             // Create a FormData object to handle the file upload
             const formData = new FormData();
+            console.log(audioBlob2)
             formData.append('file', audioBlob2, 'audio.mp3');
             formData.append('model', 'whisper-1');
 
@@ -149,60 +190,49 @@
 
 
 
-            history.push({ "role": "system", "content": personality });
-            history.push({ "role": "user", "content": `${message} [limit response to one sentence only][json format]` });
+            var responseText;
+            sendMessageToDjango(message)
+                .then(async (parsedMessage) => {  // Add the async keyword here
+                    // Handle the parsed message or perform any other actions
+                    console.log('Parsed message:', parsedMessage.response);
+                    console.log(parsedMessage.emotion);
+                    console.log(parsedMessage.background_image);
+                    responseText = parsedMessage.response;
+                    character_image = parsedMessage.emotion;
+                    body_image = parsedMessage.background_image;
 
-            // Request to GPT-3 for text completion
-            const gpt3Response = await fetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`, // Replace with your OpenAI API key
-                },
-                body: JSON.stringify({
-                    model: 'gpt-3.5-turbo-1106',
-                    messages: history,
-                    response_format: {
-                        type: 'json_object',
-                    },
-                }),
-            });
+                    document.getElementById('response_gpt').innerHTML = responseText;
+                    document.getElementById('character_id').src = character_image;
+                    document.body.style.backgroundImage = `url(${body_image})`;
 
-            const gpt3Data = await gpt3Response.json();
-            const responseText = JSON.parse(gpt3Data.choices[0].message.content).response;
-            const character_image = JSON.parse(gpt3Data.choices[0].message.content).emotion;
-            const body_image = JSON.parse(gpt3Data.choices[0].message.content).background_image;
+                    // Use await within an asynchronous function
+                    const ttsResponse = await fetch('https://api.openai.com/v1/audio/speech', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`,
+                        },
+                        body: JSON.stringify({
+                            model: 'tts-1',
+                            input: `[sound cool]${responseText}`,
+                            voice: 'alloy',
+                        }),
+                    });
 
-            document.getElementById('response_gpt').innerHTML = responseText;
-            document.getElementById('character_id').src = character_image;
-            document.body.style.backgroundImage = `url(${body_image})`;
+                    const audioBlob = await ttsResponse.blob();
 
+                    // Create an audio element and set the source to the generated audio
+                    const audioElement = new Audio(URL.createObjectURL(audioBlob));
+                    document.body.appendChild(audioElement);
 
+                    // Play the audio
+                    audioElement.play();
+                })
+                .catch(error => {
+                    // Handle errors from the sendMessageToDjango function
+                    console.error('Error:', error);
+                });
 
-            // Request to OpenAI TTS API for audio synthesis
-            const ttsResponse = await fetch('https://api.openai.com/v1/audio/speech', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`, // Replace with your OpenAI API key
-                },
-                body: JSON.stringify({
-                    model: 'tts-1',
-                    input: `[sound cool]${responseText}`,
-                    voice: 'alloy',
-                }),
-            });
-
-            const audioBlob = await ttsResponse.blob();
-
-            // Create an audio element and set the source to the generated audio
-            const audioElement = new Audio(URL.createObjectURL(audioBlob));
-            document.body.appendChild(audioElement);
-
-            // Play the audio
-            audioElement.play();
-
-            history.push({ "role": "assistant", "content": responseText });
         }
 
 

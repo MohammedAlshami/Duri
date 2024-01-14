@@ -119,7 +119,8 @@ def chat(request):
             data = json.loads(request.body.decode("utf-8"))
             message = data.get("message", "")
             user = data.get("user", "")
-            print(user)
+
+            
             # print(message)
             try:
                 chatHistory = get_chat_history(user)

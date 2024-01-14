@@ -167,6 +167,16 @@
                     },
                 }),
             });
+            const backendresponse = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: 'gpt-3.5-turbo-1106',
+                    user: "history",
+                }),
+            });
 
             const gpt3Data = await gpt3Response.json();
             const responseText = JSON.parse(gpt3Data.choices[0].message.content).response;

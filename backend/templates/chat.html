@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAI API Request</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://duri.sgp1.cdn.digitaloceanspaces.com/js/index.js"></script>
+
+</head>
+
+<body class="relative w-full h-full bg-cover bg-no-repeat"
+    style="background-image: url('https://hackaten.sgp1.cdn.digitaloceanspaces.com/Duri/bg/AdventureGuild.jpg');" id="body_bg">
+
+    <div class="h-[100vh] w-full bg-black/70 absolute flex justify-center items-center" id="name">
+        <div
+            class=" p-6 w-[500px] flex-col text-white font-bold text-lg h-fit bg-gradient-to-t from-cyan-200/40 to-cyan-800 7/23/24 60 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80 border border-gray-100 flex flex-row justify-between gap-12">
+            <h2>What's Your Name?</h2>
+            <input type="text" placeholder="Name" class="p-2 rounded-md text-black" id="usernameInput">
+            <button onclick="hideAndStore()" class="w-full bg-cyan-600 p-4 rounded-lg">Submit</button>
+        </div>
+    </div>
+
+    <div class="hidden flex justify-center items-center  h-[700px] overflow-y-hidden"  id="duri">
+        <img src="https://duri.sgp1.cdn.digitaloceanspaces.com/characters/joyful.svg" class="w-[400px] pb-12 " alt=""
+            id="character_id">
+    </div>
+
+    <div  id="chatbox"
+        class="hidden absolute top-16 left-[200px] lg:left-[500px] p-6 w-[500px] mt-[200px] md:mt-[450px] text-white  font-bold text-lg h-fit bg-gradient-to-t from-cyan-200/40 to-cyan-800 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80 border border-gray-100 flex flex-row justify-between gap-12">
+
+        <div class="w-11/12">
+            <h2 id="response_gpt">Hello Hello There My Friend. Can I know your name?</h2>
+        </div>
+        <div class="w-1/12">
+            <button id="recordButton" onclick="toggleRecording()" class="w-12 h-12"> <svg
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path fill="white"
+                        d="M4.5 10a.5.5 0 0 0-1 0a5.5 5.5 0 0 0 5 5.478V17.5a.5.5 0 0 0 1 0v-.706A5.48 5.48 0 0 1 9 14.5A4.5 4.5 0 0 1 4.5 10ZM12 5v4.6a5.514 5.514 0 0 0-2.79 3.393A3 3 0 0 1 6 10V5a3 3 0 0 1 6 0Zm5 9.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0Zm2 0a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0Zm-8 0a3.5 3.5 0 1 0 7 0a3.5 3.5 0 0 0-7 0Z" />
+                </svg></button>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
